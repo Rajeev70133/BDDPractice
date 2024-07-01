@@ -3,7 +3,6 @@ Feature: Astroyogi Kundali match
     Given Launch chrome browser
     And open Astroyogi Kundaliform page
     And Enter valid details in all the fileds of
-    And Click on Get Your Kundali button
-    When Astroyogi KundaliResult page is open
+    When Click on Get Your Kundali button to open kundali resulty page
     Then verify that the ResultTable is present on result page
     And close browser

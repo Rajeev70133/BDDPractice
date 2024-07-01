@@ -16,8 +16,13 @@ options.add_experimental_option("detach", True)
 @given(u'Launch chrome browser')
 def launchBrowser(context):
     context.driver = webdriver.Chrome(options=options)
+
+@given(u'open Astroyogi Kundaliform page')
+def step_impl(context):
     context.driver.get("https://www.astroyogi.com/kundli")
     context.driver.maximize_window()
+@given(u'Enter valid details in all the fileds of')
+def step_impl(context):
     context.driver.find_element(By.XPATH, "//input[@placeholder ='Enter Your Name ']").send_keys("qwertyuiop")
     context.driver.find_element(By.XPATH, "//select[@id ='UserGender']").click()
     context.driver.find_element(By.XPATH, "//option[@value='Female']").click()
@@ -47,9 +52,6 @@ def launchBrowser(context):
     search_box.send_keys("k")
     time.sleep(1)
     search_box.send_keys("a")
-
-
-    # Wait for the suggestions to appear
     wait = WebDriverWait(context.driver, 10)
     suggestions = wait.until(EC.visibility_of_all_elements_located((By.XPATH, "//ul[@id = 'ui-id-1']/li")))
 
@@ -60,46 +62,18 @@ def launchBrowser(context):
             suggestion.click()
             break
 
-    # Close the WebDriver
-    # context.driver.quit()
-    # ActionChains(context.driver)\
-    #     .send_keys_to_element(text_input, "b")\
-    #     .perform()
-    # # birthPlace_Ddown.click()
-    # birthPlace_Ddown.clear()
-    # birthPlace_Ddown.send_keys("bokaro")
-    # birthPlace_Ddown.send_keys("bokaro").send_keys(Keys.ARROW_DOWN)
-    # birthPlace_Ddown.send_keys(Keys.ARROW_DOWN)
-    # # elements = WebDriverWait(context.driver, 20).until(EC.visibility_of_all_elements_located((By.ID, "ui-id-10")))
-    # # context.driver.find_element(By.XPATH, "//span[@class ='sprite-kundli-page LightYellowIcon sprite-heading-kundli']").click()
-    # birthPlace_Ddown.send_keys(Keys.)
-    # birthPlace_Ddown.send_keys(Keys.NUMPAD4)
-    time.sleep(5000)
-    # print(elements)
-    # actions = ActionChains(context.driver)
-    # actions.send_keys(Keys.ARROW_DOWN).send_keys(Keys.ARROW_DOWN).send_keys(Keys.ENTER)
-    # Value_ddown = context.driver.find_element(By.XPATH, "//input[@id = 'Kund_BirthPlace']").get_attribute()
-    # context.driver.find_element(By.ID, "ui-id-10").click()
-    # items = html_list.find_elements_by_tag_name("li")
-    # for item in items:
-    #     text = item.
-    #     print(text)
-    # time.sleep(2000)
-    # context.driver.find_element(By.XPATH, "//div[@tabindex = -1 and @class='ui-menu-item-wrapper']").click()
-    # context.driver.find_element(By.XPATH, "//button[@id = 'kundli_submit']").click()
-    # time.sleep(10)
-
-@when(u'Astroyogi KundaliResult page is open')
-def KundaliResult(context):
-    resultTable = context.driver.find_element(By.XPATH,
-                                              "//table[@class = 'kundli_basic_details' and @id = 'kundlibasicdetailsWebId']")
-
+@when(u'Click on Get Your Kundali button to open kundali resulty page')
+def step_impl(context):
+    context.driver.find_element(By.XPATH, "//button[contains(text(),'Get Your Kundli')]").click()
+    time.sleep(10)
 
 @then(u'verify that the ResultTable is present on result page')
-def verifyResultTable(context):
-    raise NotImplementedError(u'STEP: Then verify that the Logo present on homepage')
+def verifyResultPage(context):
+    resultTable = context.driver.find_element(By.XPATH,
+                                              "//table[@class = 'kundli_basic_details' and @id = 'kundlibasicdetailsWebId']").is_displayed()
+    assert resultTable is True
 
 
 @then(u'close browser')
 def closeBrowser(context):
-    raise NotImplementedError(u'STEP: Then close browser')
+    context.driver.close()
